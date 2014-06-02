@@ -5,7 +5,7 @@ import play.api.Play.current
 
 object ChosenLang {
 
-  final val LANG_COOKIE_NAME = "PLAY_CHOOSEN_LANG"
+  final val LANG_COOKIE_NAME = "PLAY_CHOSEN_LANG"
 
   def get[A]()(implicit request: Request[A], default: Lang = Lang("en")): Lang = {
     request.cookies.get(LANG_COOKIE_NAME) match {

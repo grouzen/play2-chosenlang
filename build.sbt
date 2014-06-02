@@ -1,4 +1,4 @@
-name := "play2-choosenlang"
+name := "play2-chosenlang"
 
 organization := "me.mnedokushev"
 

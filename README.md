@@ -1,4 +1,4 @@
-play2-choosenlang
+play2-chosenlang
 =====================================
 
 This module allows you to choose and remember language into cookie.
@@ -13,13 +13,13 @@ Add dependency declarations into your build.sbt or Build.scala file:
 
 * ___build.sbt___
 
-        "me.mnedokushev" %% "play2-choosenlang" % "1.0-SNAPSHOT"
+        "me.mnedokushev" %% "play2-chosenlang" % "1.0-SNAPSHOT"
 
 * ___Build.scala___
 
 ```scala
   val appDependencies = Seq(
-    "me.mnedokusev" %% "play2-choosenlang" % "1.0-SNAPSHOT"
+    "me.mnedokusev" %% "play2-chosenlang" % "1.0-SNAPSHOT"
   )
 ```
 
@@ -30,17 +30,17 @@ Usage
 
     // Examples
 
-    import play.api.i18n.ChoosenLang
+    import play.api.i18n.ChosenLang
 
     // Get choosen language
     def getLang = Action { implicit request =>
-      Ok(ChoosenLang.get.code) // Prints language from cookies or first 
-                               // of application.langs from application.conf.
+      Ok(ChosenLang.get.code) // Prints language from cookies or first 
+                              // of application.langs from application.conf.
     }
 
     // Change language
     def changeLang(lang: String) = Action { implicit request =>
-      ChoosenLang.changeTo(Lang(lang)) match {
+      ChosenLang.changeTo(Lang(lang)) match {
         case Some(c) => Ok("Language changed to " + lang).withCookies(c)
         case None    => BadRequest("Sorry, Can't change language. To solve this problem - add needed language into application.conf")
       }

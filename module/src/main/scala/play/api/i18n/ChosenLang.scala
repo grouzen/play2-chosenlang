@@ -3,7 +3,7 @@ package play.api.i18n
 import play.api.mvc._
 import play.api.Play.current
 
-object ChoosenLang {
+object ChosenLang {
 
   final val LANG_COOKIE_NAME = "PLAY_CHOOSEN_LANG"
 

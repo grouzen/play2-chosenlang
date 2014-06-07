@@ -30,9 +30,20 @@ Usage
 
     // Examples
 
-    import play.api.i18n.ChosenLang
+    import me.mnedokushev.play2.chosenlang._
 
-    // Get choosen language
+    // Use chosen language implicitly inside Action
+    object MyController extends ChosenLangController {
+
+      def echoChosenLanguage(implicit lang: Lang) = Ok(lang.code)
+
+      def myAction = ChosenLangAction { implicit request =>
+        echoChosenLanguage
+      }
+
+    }
+    
+    // Get chosen language
     def getLang = Action { implicit request =>
       Ok(ChosenLang.get.code) // Prints language from cookies or first 
                               // of application.langs from application.conf.

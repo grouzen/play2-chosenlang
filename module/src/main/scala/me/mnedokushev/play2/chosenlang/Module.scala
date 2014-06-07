@@ -1,7 +1,9 @@
-package play.api.i18n
+package me.mnedokushev.play2.chosenlang
 
 import play.api.mvc._
+import play.api.i18n._
 import play.api.Play.current
+import scala.concurrent.Future
 
 object ChosenLang {
 
@@ -25,4 +27,20 @@ object ChosenLang {
   def changeTo(lang: Lang): Option[Cookie] = 
     isAvailable(Seq(lang)).map(l => Cookie(LANG_COOKIE_NAME, l.code))
 
+}
+
+case class ChosenLangRequest[A](chosenLang: Lang, request: Request[A]) extends WrappedRequest[A](request)
+
+object ChosenLangAction extends ActionBuilder[ChosenLangRequest] {
+  
+  def invokeBlock[A](req: Request[A], block: (ChosenLangRequest[A]) => Future[SimpleResult]) = {
+    block(ChosenLangRequest(ChosenLang.get()(request=req), req))
+  }
+  
+}
+
+trait ChosenLangController extends Controller {  
+  override implicit def lang(implicit request: RequestHeader): Lang = request match {
+    case cl: ChosenLangRequest[_] => cl.chosenLang
+  }
 }

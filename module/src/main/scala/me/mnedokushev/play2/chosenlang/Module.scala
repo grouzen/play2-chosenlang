@@ -40,7 +40,10 @@ object ChosenLangAction extends ActionBuilder[ChosenLangRequest] {
 }
 
 trait ChosenLangController extends Controller {  
-  override implicit def lang(implicit request: RequestHeader): Lang = request match {
-    case cl: ChosenLangRequest[_] => cl.chosenLang
+  override implicit def lang(implicit request: RequestHeader): Lang = {
+    request match {
+      case cl: ChosenLangRequest[_] => cl.chosenLang
+      case _                        => Lang("en")
+    }
   }
 }

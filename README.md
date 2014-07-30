@@ -41,20 +41,30 @@ Usage
         echoChosenLanguage
       }
 
-    }
     
-    // Get chosen language
-    def getLang = Action { implicit request =>
-      Ok(ChosenLang.get.code) // Prints language from cookies or first 
-                              // of application.langs from application.conf.
+    
+      // Get chosen language
+      def getLang = Action { implicit request =>
+        Ok(ChosenLang.get.code) // Prints language from cookies or first 
+                                // of application.langs from application.conf.
+      }
+
+      // Change language
+      def changeLang(lang: String) = Action { implicit request =>
+        ChosenLang.changeTo(Lang(lang)) match {
+          case Some(c) => Ok("Language changed to " + lang).withCookies(c)
+          case None    => BadRequest("Sorry, Can't change language. To solve this problem - add needed language into application.conf")
+        }
+      }
     }
 
-    // Change language
-    def changeLang(lang: String) = Action { implicit request =>
-      ChosenLang.changeTo(Lang(lang)) match {
-        case Some(c) => Ok("Language changed to " + lang).withCookies(c)
-        case None    => BadRequest("Sorry, Can't change language. To solve this problem - add needed language into application.conf")
+    // In case of using play2-auth module, extend your controller with ChosenLangElement
+    object MyAuthController extends ChosenLangElement with AuthElement with Controller {
+
+      def someAction = StackAction(AuthorityKey -> User) { implicit request => // request always should be implicit
+        Ok(ChosenLang.get.code) // Will print current language
       }
+      
     }
       
 ```

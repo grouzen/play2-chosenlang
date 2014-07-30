@@ -47,3 +47,26 @@ trait ChosenLangController extends Controller {
     }
   }
 }
+
+/**
+ * Use it with play2-auth module. 
+ */
+import jp.t2v.lab.play2.stackc.{RequestWithAttributes, RequestAttributeKey, StackableController}
+
+trait ChosenLangElement extends StackableController {
+  this: Controller =>
+
+  case object ChosenLangKey extends RequestAttributeKey[Lang]
+  
+  override def proceed[A](req: RequestWithAttributes[A])(f: RequestWithAttributes[A] => Future[Result]): Future[Result] = {
+    super.proceed(req.set(ChosenLangKey, ChosenLang.get()(request=req)))(f)
+  }
+
+  override implicit def lang(implicit request: RequestHeader): Lang = {
+    request match {
+      case r:RequestWithAttributes[_] => r.get(ChosenLangKey).get
+      case _ => Lang("en")
+    }
+  }
+
+}
